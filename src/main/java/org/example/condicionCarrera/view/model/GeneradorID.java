@@ -1,4 +1,4 @@
-package model;
+package org.example.condicionCarrera.view.model;
 
 public class GeneradorID {
 

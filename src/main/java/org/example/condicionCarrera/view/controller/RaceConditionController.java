@@ -1,7 +1,7 @@
-package controller;
-import model.ClienteHilo;
-import model.GeneradorID;
-import view.ConsolaView;
+package org.example.condicionCarrera.view.controller;
+import org.example.condicionCarrera.view.model.ClienteHilo;
+import org.example.condicionCarrera.view.model.GeneradorID;
+import org.example.condicionCarrera.view.ConsolaView;
 
 public class RaceConditionController {
 

@@ -1,5 +1,5 @@
-package model;
-import view.ConsolaView;
+package org.example.condicionCarrera.view.model;
+import org.example.condicionCarrera.view.ConsolaView;
 
 public class ClienteHilo implements Runnable {
 

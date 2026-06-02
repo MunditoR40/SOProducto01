@@ -1,5 +1,5 @@
-package org.example;
-import controller.RaceConditionController;
+package org.example.condicionCarrera.view;
+import org.example.condicionCarrera.view.controller.RaceConditionController;
 
 public class Main {
     public static void main(String[] args) {
