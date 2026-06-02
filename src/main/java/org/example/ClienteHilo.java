@@ -16,7 +16,7 @@ public class ClienteHilo implements Runnable {
             int id = generador.generarID();
 
             System.out.println(Thread.currentThread().getName()
-                    + " obtuvo el ID: " + id);
+                    + " se asigno el ID: " + id);
         }
     }
 
