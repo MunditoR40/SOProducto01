@@ -4,7 +4,10 @@ public class GeneradorID {
 
     private int ultimoID = 0;
 
-    public int generarID() {
+
+    // synchronized  para la sincronizacion de la asignacion de id
+
+    public synchronized  int generarID() {
 
         int nuevoID = ultimoID;
 
