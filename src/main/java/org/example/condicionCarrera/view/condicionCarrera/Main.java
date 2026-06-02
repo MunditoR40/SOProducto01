@@ -12,5 +12,6 @@ public class Main {
             new RaceConditionController(vista);
 
             vista.setVisible(true);
+
         }
 }
