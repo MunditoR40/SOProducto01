@@ -1,4 +1,4 @@
-package org.example.condicionCarrera.view.model;
+package org.example.condicionCarrera.view.condicionCarrera.model;
 
 public class GeneradorID {
 
@@ -19,7 +19,18 @@ public class GeneradorID {
         return ultimoID;
     }
 
-    public int getUltimoID() {
+    public synchronized int generarIDSeguro() {
+
+        int temp = ultimoID;
+
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        ultimoID = temp + 1;
+
         return ultimoID;
     }
 }
