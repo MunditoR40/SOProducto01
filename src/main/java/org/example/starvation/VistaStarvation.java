@@ -13,6 +13,7 @@ public class VistaStarvation extends JFrame {
     public JTextArea txtConsola;
     public JTextPane paneActivos; // Nuevo componente solicitado
     public JButton btnAyuda;
+    public JButton btnVolver;
 
     public VistaStarvation() {
         setTitle("Producto de 1° Unidad - Sistemas Operativos - Simulación de Inanición");        setSize(850, 550);
@@ -45,6 +46,9 @@ public class VistaStarvation extends JFrame {
 
         btnAyuda = new JButton("?"); // Botón pequeño de ayuda
         panelControles.add(btnAyuda);
+
+        btnVolver = new JButton("Volver al Menú");
+        panelControles.add(btnVolver);
 
         panelTop.add(panelControles);
         add(panelTop, BorderLayout.NORTH);

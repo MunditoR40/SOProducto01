@@ -6,10 +6,12 @@ import java.util.List;
 public class ControladorStarvation {
     private SimuladorStarvation modelo;
     private VistaStarvation vista;
+    private JFrame menuPrincipal;
 
-    public ControladorStarvation(SimuladorStarvation modelo, VistaStarvation vista) {
+    public ControladorStarvation(SimuladorStarvation modelo, VistaStarvation vista,JFrame menuPrincipal) {
         this.modelo = modelo;
         this.vista = vista;
+        this.menuPrincipal = menuPrincipal;
 
         // Conexión del Notificador de Consola
         this.modelo.setNotificador(mensaje -> {
@@ -24,8 +26,15 @@ public class ControladorStarvation {
         this.vista.btnIniciar.addActionListener(e -> iniciar());
         this.vista.btnDetener.addActionListener(e -> detener());
         this.vista.btnAyuda.addActionListener(e -> mostrarAyuda());
+        this.vista.btnVolver.addActionListener(e -> volverAlMenu());
 
         actualizarPanelActivos(); // Mostrar panel vacío al inicio
+    }
+
+    private void volverAlMenu() {
+        modelo.detenerSimulacion(); // Detiene los hilos por seguridad
+        vista.dispose(); // Cierra la ventana actual de Starvation
+        menuPrincipal.setVisible(true); // Vuelve a mostrar el menú principal
     }
 
     private void mostrarAyuda() {
@@ -94,17 +103,5 @@ public class ControladorStarvation {
         SwingUtilities.invokeLater(() -> vista.paneActivos.setText(sb.toString()));
     }
 
-    public static void main(String[] args) {
-        // Look and Feel nativo del Sistema Operativo para mejor estética
-        try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName()); }
-        catch (Exception e) {}
 
-        SwingUtilities.invokeLater(() -> {
-            SimuladorStarvation modelo = new SimuladorStarvation();
-            VistaStarvation vista = new VistaStarvation();
-
-            new ControladorStarvation(modelo, vista);
-            vista.setVisible(true);
-        });
-    }
 }
