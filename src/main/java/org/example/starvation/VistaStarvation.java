@@ -90,5 +90,23 @@ public class VistaStarvation extends JFrame {
 
         add(panelBottom, BorderLayout.SOUTH);
         setLocationRelativeTo(null);
+
+
+    }
+
+    public String getNombreHilo() {
+        return txtNombre.getText().trim();
+    }
+
+    public int getPrioridadSeleccionada() {
+        return (Integer) cbPrioridad.getSelectedItem();
+    }
+
+    public void limpiarNombre() {
+        txtNombre.setText("");
+    }
+
+    public void enfocarNombre() {
+        txtNombre.requestFocus();
     }
 }

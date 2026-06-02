@@ -8,7 +8,7 @@ public class SimuladorStarvation {
     private final Object recursoCPU = new Object();
     private volatile boolean simulacionActiva = false;
     private final List<Thread> listaHilos = new ArrayList<>();
-
+    private volatile int prioridadMaxima = 0;
     private Consumer<String> notificador;
 
     public void setNotificador(Consumer<String> notificador) {
@@ -20,12 +20,30 @@ public class SimuladorStarvation {
     }
 
     public synchronized void agregarHilo(String nombre, int prioridad) {
+        if (existeHilo(nombre)) {
+            throw new IllegalArgumentException(
+                    "Ya existe un hilo con el nombre: " + nombre
+            );
+        }
+        prioridadMaxima = Math.max(prioridadMaxima, prioridad);
+
         Thread nuevoHilo = new Thread(() -> {
             int ejecuciones = 0;
             while (simulacionActiva && !Thread.currentThread().isInterrupted()) {
+
+                if (prioridad < prioridadMaxima) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                    continue;
+                }
+
                 synchronized (recursoCPU) {
                     ejecuciones++;
-                    imprimir("[" + nombre + " - Prio: " + prioridad + "] obtuvo la CPU. Ejecución #" + ejecuciones);
+                    imprimir("[" + nombre + "] ejecutando #" + ejecuciones);
 
                     try {
                         Thread.sleep(100);
@@ -33,12 +51,6 @@ public class SimuladorStarvation {
                         Thread.currentThread().interrupt();
                         break;
                     }
-                }
-                try {
-                    Thread.sleep(5);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    break;
                 }
             }
         });
@@ -76,4 +88,14 @@ public class SimuladorStarvation {
     public synchronized List<Thread> getHilos() {
         return new ArrayList<>(listaHilos);
     }
+
+    public synchronized boolean existeHilo(String nombre) {
+        for (Thread hilo : listaHilos) {
+            if (hilo.getName().equalsIgnoreCase(nombre)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

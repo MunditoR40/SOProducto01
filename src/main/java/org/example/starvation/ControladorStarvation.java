@@ -37,19 +37,24 @@ public class ControladorStarvation {
     }
 
     private void agregarNuevoHilo() {
-        String nombre = vista.txtNombre.getText().trim();
+        String nombre = vista.getNombreHilo();
+        int prioridad = vista.getPrioridadSeleccionada();
+
+
         if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(vista, "Escriba un nombre para el hilo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    vista,
+                    "Escriba un nombre para el hilo.",
+                    "Advertencia",
+                    JOptionPane.WARNING_MESSAGE
+            );
             return;
         }
 
-        int prioridad = (Integer) vista.cbPrioridad.getSelectedItem();
         modelo.agregarHilo(nombre, prioridad);
-
-        actualizarPanelActivos(); // Refrescar la lista visible
-
-        vista.txtNombre.setText("");
-        vista.txtNombre.requestFocus();
+        actualizarPanelActivos();
+        vista.limpiarNombre();
+        vista.enfocarNombre();
     }
 
     private void iniciar() {
