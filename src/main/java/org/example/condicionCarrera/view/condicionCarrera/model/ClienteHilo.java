@@ -1,5 +1,5 @@
 package org.example.condicionCarrera.view.condicionCarrera.model;
-import view.VentanaView;
+import org.example.condicionCarrera.view.condicionCarrera.view.VentanaView;
 
 public class ClienteHilo implements Runnable {
     private GeneradorID generador;
