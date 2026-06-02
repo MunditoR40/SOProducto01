@@ -1,7 +1,5 @@
-package org.example.condicionCarrera.view.condicionCarrera;
-import org.example.condicionCarrera.view.condicionCarrera.model.ClienteHilo;
-import org.example.condicionCarrera.view.condicionCarrera.model.GeneradorID;
-import org.example.condicionCarrera.view.condicionCarrera.view.VentanaView;
+package org.example.condicionCarrera.view.condicionCarrera.condicionCarrera.model;
+import org.example.condicionCarrera.view.condicionCarrera.condicionCarrera.model.view.VentanaView;
 public class RaceConditionController {
     private VentanaView vista;
 

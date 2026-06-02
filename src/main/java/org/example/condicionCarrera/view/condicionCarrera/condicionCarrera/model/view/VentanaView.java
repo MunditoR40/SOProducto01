@@ -1,4 +1,4 @@
-package org.example.condicionCarrera.view.condicionCarrera.view;
+package org.example.condicionCarrera.view.condicionCarrera.condicionCarrera.model.view;
 import javax.swing.*;
 import java.awt.*;
 

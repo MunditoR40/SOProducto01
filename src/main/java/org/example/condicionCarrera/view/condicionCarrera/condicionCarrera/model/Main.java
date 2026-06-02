@@ -1,6 +1,6 @@
-package org.example.condicionCarrera.view.condicionCarrera;
+package org.example.condicionCarrera.view.condicionCarrera.condicionCarrera.model;
 
-import org.example.condicionCarrera.view.condicionCarrera.view.VentanaView;
+import org.example.condicionCarrera.view.condicionCarrera.condicionCarrera.model.view.VentanaView;
 
 public class Main {
 
