@@ -92,9 +92,6 @@ public class VistaStarvation extends JFrame {
         panelAccionesCentro.add(btnDetener);
         panelFooter.add(panelAccionesCentro, BorderLayout.CENTER); // FIJO AL CENTRO
 
-        JLabel lblAutores = new JLabel("Autor: Rojas Leon & Liñan Briones", SwingConstants.RIGHT);
-        lblAutores.setFont(new Font("Arial", Font.ITALIC, 11));
-        panelFooter.add(lblAutores, BorderLayout.EAST); // FIJO A LA DERECHA
 
         add(panelFooter, BorderLayout.SOUTH);
         setLocationRelativeTo(null);

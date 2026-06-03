@@ -9,6 +9,7 @@ public class SimuladorStarvation {
     private volatile boolean simulacionActiva = false;
     private final List<Thread> listaHilos = new ArrayList<>();
     private Consumer<String> notificador;
+    private volatile int prioridadMaxima = 0;
 
     public void setNotificador(Consumer<String> notificador) {
         this.notificador = notificador;
@@ -28,25 +29,70 @@ public class SimuladorStarvation {
     }
 
     public synchronized void agregarHilo(final String nombre, final int prioridad) {
-        Thread nuevoHilo = new Thread(() -> {
-            int ejecuciones = 0;
-            while (simulacionActiva && !Thread.currentThread().isInterrupted()) {
-                synchronized (recursoCPU) {
-                    ejecuciones++;
-                    String tag = (prioridad >= 9) ? "[ALTA]" : "[BAJA]";
-                    imprimir(tag + " " + nombre + " (Prio: " + prioridad + ") obtuvo la CPU. Ejecución #" + ejecuciones);
+        prioridadMaxima = Math.max(prioridadMaxima, prioridad);
+        if (existeHilo(nombre)) {
+            throw new IllegalArgumentException(
+                    "Ya existe un proceso con el nombre: " + nombre
+            );
+        }
 
-                    // Bucle agresivo para evitar que el SO intercale fácilmente
-                    for(int i=0; i<1000000; i++) Math.sin(i);
+        prioridadMaxima = Math.max(prioridadMaxima, prioridad);
+
+        Thread nuevoHilo = new Thread(() -> {
+
+            int ejecuciones = 0;
+
+            while (simulacionActiva &&
+                    !Thread.currentThread().isInterrupted()) {
+
+                // Simulación de inanición
+                if (prioridad < prioridadMaxima) {
+
+                    imprimir("[ESPERANDO] " + nombre +
+                            " (Prio: " + prioridad +
+                            ") no obtiene CPU porque existe un proceso con prioridad mayor.");
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+
+                    continue;
                 }
-                Thread.yield(); // Cede el paso pero pide volver de inmediato
+
+                synchronized (recursoCPU) {
+
+                    ejecuciones++;
+
+                    imprimir("[EJECUTANDO] " + nombre +
+                            " (Prio: " + prioridad +
+                            ") obtuvo la CPU. Ejecución #" +
+                            ejecuciones);
+
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        break;
+                    }
+                }
             }
+
         });
 
         nuevoHilo.setName(nombre);
-        nuevoHilo.setPriority(prioridad);
+
         listaHilos.add(nuevoHilo);
-        imprimir(">>> Proceso cargado en memoria: " + nombre + " [Prioridad: " + prioridad + "]");
+
+        imprimir(">>> Proceso cargado en memoria: "
+                + nombre +
+                " [Prioridad: " + prioridad + "]");
+
+        if (simulacionActiva) {
+            nuevoHilo.start();
+        }
     }
 
     public synchronized void iniciarSimulacion() {
