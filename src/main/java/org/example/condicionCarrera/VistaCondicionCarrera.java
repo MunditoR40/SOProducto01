@@ -1,4 +1,5 @@
 package org.example.condicionCarrera;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -16,40 +17,68 @@ public class VistaCondicionCarrera extends JFrame {
     public JCheckBox chkModoSeguro;
 
     public JTextArea txtConsola;
-
     public JTextPane paneMemoria;
-
     public JLabel lblContador;
 
     public VistaCondicionCarrera() {
 
+        configurarVentana();
+        cargarIcono();
+
+        add(crearPanelSuperior(), BorderLayout.NORTH);
+        add(crearPanelCentral(), BorderLayout.CENTER);
+        add(crearPanelInferior(), BorderLayout.SOUTH);
+
+        setLocationRelativeTo(null);
+    }
+
+    private void configurarVentana() {
         setTitle("Simulación de Condición de Carrera");
         setSize(900, 550);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
+    }
 
-        // =====================
-        // PANEL SUPERIOR
-        // =====================
+    private void cargarIcono() {
+        try {
+            java.net.URL urlLogo =
+                    getClass().getResource("/uns_logo.png");
 
-        JPanel panelTop = new JPanel(new GridLayout(2,1));
+            if (urlLogo != null) {
+                ImageIcon icon = new ImageIcon(urlLogo);
+                setIconImage(icon.getImage());
+            }
 
-        JLabel lblTitulo = new JLabel(
-                "SIMULACIÓN DE CONDICIÓN DE CARRERA",
-                SwingConstants.CENTER
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private JPanel crearPanelSuperior() {
+
+        JPanel panelTop =
+                new JPanel(new GridLayout(2, 1));
+
+        JLabel lblTitulo =
+                new JLabel("SIMULACIÓN DE CONDICIÓN DE CARRERA",SwingConstants.CENTER);
+
+        lblTitulo.setFont(
+                new Font("Arial",Font.BOLD,18)
         );
 
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setBorder(new EmptyBorder(10,0,5,0));
+        lblTitulo.setBorder(
+                new EmptyBorder(10,0,5,0)
+        );
 
         panelTop.add(lblTitulo);
+        panelTop.add(crearPanelControles());
 
-        JPanel panelControles =
-                new JPanel(new FlowLayout(
-                        FlowLayout.CENTER,
-                        10,
-                        5
-                ));
+        return panelTop;
+    }
+
+    private JPanel crearPanelControles() {
+
+        JPanel panelControles = new JPanel(new FlowLayout(FlowLayout.CENTER,10,5));
 
         panelControles.add(new JLabel("Proceso:"));
 
@@ -61,8 +90,7 @@ public class VistaCondicionCarrera extends JFrame {
 
         panelControles.add(btnAgregar);
 
-        chkModoSeguro =
-                new JCheckBox("Modo Seguro (synchronized)");
+        chkModoSeguro = new JCheckBox("Modo Seguro (synchronized)");
 
         panelControles.add(chkModoSeguro);
 
@@ -74,46 +102,31 @@ public class VistaCondicionCarrera extends JFrame {
 
         panelControles.add(btnVolver);
 
-        panelTop.add(panelControles);
+        return panelControles;
+    }
 
-        add(panelTop, BorderLayout.NORTH);
+    private JSplitPane crearPanelCentral() {
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,crearPanelIzquierdo(),crearPanelDerecho());
+        splitPane.setDividerLocation(280);
+        return splitPane;
+    }
 
-        // =====================
-        // PANEL IZQUIERDO
-        // =====================
+    private JPanel crearPanelIzquierdo() {
 
         paneMemoria = new JTextPane();
-
         paneMemoria.setEditable(false);
+        paneMemoria.setFont(new Font("Monospaced",Font.PLAIN,14));
 
-        paneMemoria.setFont(
-                new Font(
-                        "Monospaced",
-                        Font.PLAIN,
-                        14
-                )
-        );
+        paneMemoria.setBackground(new Color(245,245,245));
 
-        paneMemoria.setBackground(
-                new Color(245,245,245)
-        );
+        lblContador = new JLabel("Contador Compartido: 0",SwingConstants.CENTER);
 
-        lblContador =
-                new JLabel(
-                        "Contador Compartido: 0",
-                        SwingConstants.CENTER
-                );
-
-        lblContador.setFont(
-                new Font(
-                        "Arial",
-                        Font.BOLD,
-                        14
-                )
-        );
+        lblContador.setFont(new Font("Arial",Font.BOLD,14));
 
         JPanel panelIzquierdo =
-                new JPanel(new BorderLayout());
+                new JPanel(
+                        new BorderLayout()
+                );
 
         panelIzquierdo.add(
                 lblContador,
@@ -121,22 +134,32 @@ public class VistaCondicionCarrera extends JFrame {
         );
 
         panelIzquierdo.add(
-                new JScrollPane(paneMemoria),
+                new JScrollPane(
+                        paneMemoria
+                ),
                 BorderLayout.CENTER
         );
 
-        // =====================
-        // PANEL DERECHO
-        // =====================
+        return panelIzquierdo;
+    }
 
-        txtConsola = new JTextArea();
+    private JPanel crearPanelDerecho() {
+
+        txtConsola =
+                new JTextArea();
 
         txtConsola.setEditable(false);
 
-        txtConsola.setBackground(Color.BLACK);
+        txtConsola.setBackground(
+                Color.BLACK
+        );
 
         txtConsola.setForeground(
-                new Color(0,255,0)
+                new Color(
+                        0,
+                        255,
+                        0
+                )
         );
 
         txtConsola.setFont(
@@ -148,7 +171,9 @@ public class VistaCondicionCarrera extends JFrame {
         );
 
         JPanel panelDerecho =
-                new JPanel(new BorderLayout());
+                new JPanel(
+                        new BorderLayout()
+                );
 
         panelDerecho.add(
                 new JLabel(
@@ -159,69 +184,48 @@ public class VistaCondicionCarrera extends JFrame {
         );
 
         panelDerecho.add(
-                new JScrollPane(txtConsola),
+                new JScrollPane(
+                        txtConsola
+                ),
                 BorderLayout.CENTER
         );
 
-        // =====================
-        // SPLIT
-        // =====================
+        return panelDerecho;
+    }
 
-        JSplitPane splitPane =
-                new JSplitPane(
-                        JSplitPane.HORIZONTAL_SPLIT,
-                        panelIzquierdo,
-                        panelDerecho
-                );
-
-        splitPane.setDividerLocation(280);
-
-        add(splitPane, BorderLayout.CENTER);
-
-        // =====================
-        // PANEL INFERIOR
-        // =====================
+    private JPanel crearPanelInferior() {
 
         JPanel panelBottom =
-                new JPanel(new BorderLayout());
+                new JPanel(
+                        new BorderLayout()
+                );
 
         JPanel panelBotones =
-                new JPanel(new FlowLayout());
+                new JPanel(
+                        new FlowLayout()
+                );
 
         btnIniciar =
-                new JButton("Iniciar Simulación");
+                new JButton(
+                        "Iniciar Simulación"
+                );
 
         btnDetener =
-                new JButton("Detener Simulación");
+                new JButton(
+                        "Detener Simulación"
+                );
 
         btnDetener.setEnabled(false);
 
         panelBotones.add(btnIniciar);
         panelBotones.add(btnDetener);
 
-
         panelBottom.add(
                 panelBotones,
                 BorderLayout.CENTER
         );
 
-        add(panelBottom, BorderLayout.SOUTH);
-
-        setLocationRelativeTo(null);
-
-        try {
-            // Cargamos la imagen desde la carpeta de recursos de forma segura para el JAR
-            java.net.URL urlLogo = getClass().getResource("/uns_logo.png");
-            if (urlLogo != null) {
-                ImageIcon icon = new ImageIcon(urlLogo);
-                // Colocamos el icono en la ventana
-                this.setIconImage(icon.getImage());
-            } else {
-                System.out.println("No se pudo encontrar el archivo uns_logo.png en resources");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        return panelBottom;
     }
 
     public String getNombreProceso() {

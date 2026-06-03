@@ -16,91 +16,106 @@ public class VistaDeadlock extends JFrame {
     public JButton btnVolver;
 
     public JTextPane paneMemoria;
-
     public JTextArea txtConsola;
 
     public VistaDeadlock() {
 
+        configurarVentana();
+        cargarIcono();
+
+        add(crearPanelSuperior(), BorderLayout.NORTH);
+        add(crearPanelCentral(), BorderLayout.CENTER);
+        add(crearPanelInferior(), BorderLayout.SOUTH);
+
+        setLocationRelativeTo(null);
+    }
+
+    private void configurarVentana() {
         setTitle("Simulación de Interbloqueo (Deadlock)");
         setSize(900, 550);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new BorderLayout(10,10));
+        setLayout(new BorderLayout(10, 10));
+    }
 
-        // =========================
-        // PANEL SUPERIOR
-        // =========================
+    private void cargarIcono() {
+        try {
+            java.net.URL urlLogo = getClass().getResource("/uns_logo.png");
 
-        JPanel panelTop = new JPanel(new GridLayout(2,1));
+            if (urlLogo != null) {
+                ImageIcon icon = new ImageIcon(urlLogo);
+                setIconImage(icon.getImage());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private JPanel crearPanelSuperior() {
+
+        JPanel panelTop = new JPanel(new GridLayout(2, 1));
 
         JLabel lblTitulo = new JLabel(
                 "SIMULACIÓN DE INTERBLOQUEO (DEADLOCK)",
                 SwingConstants.CENTER
         );
 
-        lblTitulo.setFont(
-                new Font(
-                        "Arial",
-                        Font.BOLD,
-                        18
-                )
-        );
+        lblTitulo.setFont(new Font(
+                "Arial",
+                Font.BOLD,
+                18
+        ));
 
         lblTitulo.setBorder(
-                new EmptyBorder(
-                        10,0,5,0
-                )
+                new EmptyBorder(10, 0, 5, 0)
         );
 
         panelTop.add(lblTitulo);
+        panelTop.add(crearPanelControles());
 
-        JPanel panelControles =
-                new JPanel(
-                        new FlowLayout(
-                                FlowLayout.CENTER,
-                                10,
-                                5
-                        )
-                );
+        return panelTop;
+    }
 
-        panelControles.add(
-                new JLabel("Proceso:")
+    private JPanel crearPanelControles() {
+
+        JPanel panelControles = new JPanel(
+                new FlowLayout(
+                        FlowLayout.CENTER,
+                        10,
+                        5
+                )
         );
 
-        txtNombreProceso =
-                new JTextField(12);
+        panelControles.add(new JLabel("Proceso:"));
 
-        panelControles.add(
-                txtNombreProceso
+        txtNombreProceso = new JTextField(12);
+        panelControles.add(txtNombreProceso);
+
+        btnAgregar = new JButton("Agregar Proceso");
+        panelControles.add(btnAgregar);
+
+        btnAyuda = new JButton("?");
+        panelControles.add(btnAyuda);
+
+        btnVolver = new JButton("Volver al Menú");
+        panelControles.add(btnVolver);
+
+        return panelControles;
+    }
+
+    private JSplitPane crearPanelCentral() {
+
+        JSplitPane splitPane = new JSplitPane(
+                JSplitPane.HORIZONTAL_SPLIT,
+                crearPanelMemoria(),
+                crearPanelConsola()
         );
 
-        btnAgregar =
-                new JButton("Agregar Proceso");
+        splitPane.setDividerLocation(300);
 
-        panelControles.add(
-                btnAgregar
-        );
+        return splitPane;
+    }
 
-        btnAyuda =
-                new JButton("?");
-
-        panelControles.add(
-                btnAyuda
-        );
-
-        btnVolver =
-                new JButton("Volver al Menú");
-
-        panelControles.add(
-                btnVolver
-        );
-
-        panelTop.add(panelControles);
-
-        add(panelTop, BorderLayout.NORTH);
-
-        // =========================
-        // PANEL MEMORIA
-        // =========================
+    private JPanel crearPanelMemoria() {
 
         paneMemoria = new JTextPane();
 
@@ -115,9 +130,7 @@ public class VistaDeadlock extends JFrame {
         );
 
         JPanel panelIzquierdo =
-                new JPanel(
-                        new BorderLayout()
-                );
+                new JPanel(new BorderLayout());
 
         panelIzquierdo.add(
                 new JLabel(
@@ -128,28 +141,20 @@ public class VistaDeadlock extends JFrame {
         );
 
         panelIzquierdo.add(
-                new JScrollPane(
-                        paneMemoria
-                ),
+                new JScrollPane(paneMemoria),
                 BorderLayout.CENTER
         );
 
-        // =========================
-        // PANEL CONSOLA
-        // =========================
+        return panelIzquierdo;
+    }
 
-        txtConsola =
-                new JTextArea();
+    private JPanel crearPanelConsola() {
+
+        txtConsola = new JTextArea();
 
         txtConsola.setEditable(false);
-
-        txtConsola.setBackground(
-                Color.BLACK
-        );
-
-        txtConsola.setForeground(
-                new Color(0,255,0)
-        );
+        txtConsola.setBackground(Color.BLACK);
+        txtConsola.setForeground(new Color(0, 255, 0));
 
         txtConsola.setFont(
                 new Font(
@@ -160,9 +165,7 @@ public class VistaDeadlock extends JFrame {
         );
 
         JPanel panelDerecho =
-                new JPanel(
-                        new BorderLayout()
-                );
+                new JPanel(new BorderLayout());
 
         panelDerecho.add(
                 new JLabel(
@@ -173,55 +176,29 @@ public class VistaDeadlock extends JFrame {
         );
 
         panelDerecho.add(
-                new JScrollPane(
-                        txtConsola
-                ),
+                new JScrollPane(txtConsola),
                 BorderLayout.CENTER
         );
 
-        // =========================
-        // SPLIT PANEL
-        // =========================
+        return panelDerecho;
+    }
 
-        JSplitPane splitPane =
-                new JSplitPane(
-                        JSplitPane.HORIZONTAL_SPLIT,
-                        panelIzquierdo,
-                        panelDerecho
-                );
-
-        splitPane.setDividerLocation(300);
-
-        add(splitPane, BorderLayout.CENTER);
-
-        // =========================
-        // PANEL INFERIOR
-        // =========================
+    private JPanel crearPanelInferior() {
 
         JPanel panelBottom =
-                new JPanel(
-                        new BorderLayout()
-                );
+                new JPanel(new BorderLayout());
 
         JPanel panelBotones =
-                new JPanel(
-                        new FlowLayout()
-                );
+                new JPanel(new FlowLayout());
 
         btnIniciar =
-                new JButton(
-                        "Iniciar Simulación"
-                );
+                new JButton("Iniciar Simulación");
 
         btnDetener =
-                new JButton(
-                        "Detener"
-                );
+                new JButton("Detener");
 
         btnRecuperar =
-                new JButton(
-                        "Recuperar Deadlock"
-                );
+                new JButton("Recuperar Deadlock");
 
         btnRecuperar.setEnabled(false);
 
@@ -234,35 +211,16 @@ public class VistaDeadlock extends JFrame {
                 BorderLayout.CENTER
         );
 
-        add(panelBottom,
-                BorderLayout.SOUTH);
-
-        setLocationRelativeTo(null);
-
-        try {
-            // Cargamos la imagen desde la carpeta de recursos de forma segura para el JAR
-            java.net.URL urlLogo = getClass().getResource("/uns_logo.png");
-            if (urlLogo != null) {
-                ImageIcon icon = new ImageIcon(urlLogo);
-                // Colocamos el icono en la ventana
-                this.setIconImage(icon.getImage());
-            } else {
-                System.out.println("No se pudo encontrar el archivo uns_logo.png en resources");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        return panelBottom;
     }
 
     public String getNombreProceso() {
-
         return txtNombreProceso
                 .getText()
                 .trim();
     }
 
     public void limpiarNombre() {
-
         txtNombreProceso.setText("");
     }
 }
