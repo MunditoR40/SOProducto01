@@ -3,6 +3,12 @@ package org.example;
 import org.example.starvation.ControladorStarvation;
 import org.example.starvation.SimuladorStarvation;
 import org.example.starvation.VistaStarvation;
+// condicion carrera
+
+import org.example.condicionCarrera.ControladorCondicionCarrera;
+import org.example.condicionCarrera.SimuladorCondicionCarrera;
+import org.example.condicionCarrera.VistaCondicionCarrera;
+
 
 import javax.swing.*;
 
@@ -14,7 +20,10 @@ public class MenuPrincipalControlador {
 
         // Eventos de los botones
         this.vistaMenu.btnStarvation.addActionListener(e -> abrirStarvation());
-        this.vistaMenu.btnRaceCondition.addActionListener(e -> abrirEnDesarrollo("Condición de Carrera"));
+
+        this.vistaMenu.btnRaceCondition.addActionListener(
+                (e) -> this.abrirCondicionCarrera()
+        );
         this.vistaMenu.btnDeadlock.addActionListener(e -> abrirEnDesarrollo("Deadlock"));
         this.vistaMenu.btnAutores.addActionListener(e -> mostrarAutores());
         this.vistaMenu.btnSalir.addActionListener(e -> System.exit(0));
@@ -33,6 +42,27 @@ public class MenuPrincipalControlador {
 
         vista.setVisible(true);
     }
+
+    private void abrirCondicionCarrera() {
+
+        this.vistaMenu.setVisible(false);
+
+        SimuladorCondicionCarrera modelo =
+                new SimuladorCondicionCarrera();
+
+        VistaCondicionCarrera vista =
+                new VistaCondicionCarrera();
+
+        new ControladorCondicionCarrera(
+                modelo,
+                vista,
+                this.vistaMenu
+        );
+
+        vista.setVisible(true);
+    }
+
+
 
     private void abrirEnDesarrollo(String modulo) {
         JOptionPane.showMessageDialog(vistaMenu,
