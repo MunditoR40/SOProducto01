@@ -36,6 +36,12 @@ public class MenuPrincipalVista extends JFrame {
         // Colores para destacar
         btnStarvation.setBackground(new Color(0, 102, 204));
         btnStarvation.setForeground(Color.BLUE);
+        btnRaceCondition.setBackground(new Color(0, 102, 204));
+        btnRaceCondition.setForeground(Color.BLUE);
+        btnDeadlock.setBackground(new Color(0, 102, 204));
+        btnDeadlock.setForeground(Color.BLUE);
+        btnAutores.setBackground(Color.GREEN);
+        btnAutores.setForeground(new Color(6, 218, 6));
         btnSalir.setBackground(new Color(153, 0, 0));
         btnSalir.setForeground(Color.RED);
 
