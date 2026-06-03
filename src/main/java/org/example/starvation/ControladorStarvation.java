@@ -28,6 +28,17 @@ public class ControladorStarvation {
         this.vista.btnAyuda.addActionListener(e -> mostrarAyuda());
         this.vista.btnVolver.addActionListener(e -> volverAlMenu());
 
+        vista.addWindowListener(new java.awt.event.WindowAdapter() {
+
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+
+                modelo.detenerSimulacion();
+
+                menuPrincipal.setVisible(true);
+            }
+        });
+
         actualizarPanelActivos(); // Mostrar panel vacío al inicio
     }
 

@@ -230,7 +230,12 @@ public class SimuladorDeadlock {
         recursosAsignados.clear();
         recursosEsperados.clear();
 
+        procesos.clear(); // <-- LIMPIA LOS PROCESOS
+
+        deadlockDetectado = false;
+
         imprimir("");
         imprimir("--- SIMULACIÓN DETENIDA ---");
+        imprimir("Memoria liberada.");
     }
 }

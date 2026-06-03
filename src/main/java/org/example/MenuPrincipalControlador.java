@@ -90,13 +90,6 @@ public class MenuPrincipalControlador {
     }
 
 
-
-    private void abrirEnDesarrollo(String modulo) {
-        JOptionPane.showMessageDialog(vistaMenu,
-                "El módulo de " + modulo + " está siendo integrado por JC.",
-                "En desarrollo", JOptionPane.INFORMATION_MESSAGE);
-    }
-
     private void mostrarAutores() {
         String autores = "--- EQUIPO DE DESARROLLO ---\n\n" +
                 "• Alejos Ponce, Erick Segundo (0202314002)\n" +

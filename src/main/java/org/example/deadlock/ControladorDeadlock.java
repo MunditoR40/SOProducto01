@@ -65,6 +65,18 @@ public class ControladorDeadlock {
                 e -> volverMenu()
         );
 
+        vista.addWindowListener(new java.awt.event.WindowAdapter() {
+
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+
+                modelo.detenerSimulacion();
+
+                menuPrincipal.setVisible(true);
+            }
+        });
+
+
         actualizarMemoria();
     }
 

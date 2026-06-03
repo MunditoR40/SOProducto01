@@ -17,7 +17,7 @@ public class VistaStarvation extends JFrame {
 
     public VistaStarvation() {
         setTitle("Producto de 1° Unidad - Sistemas Operativos - Simulación de Inanición");        setSize(850, 550);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
         // --- Panel Superior: Título y Entradas ---
