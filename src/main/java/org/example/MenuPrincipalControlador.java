@@ -9,6 +9,11 @@ import org.example.condicionCarrera.ControladorCondicionCarrera;
 import org.example.condicionCarrera.SimuladorCondicionCarrera;
 import org.example.condicionCarrera.VistaCondicionCarrera;
 
+//deadlock
+
+import org.example.deadlock.ControladorDeadlock;
+import org.example.deadlock.SimuladorDeadlock;
+import org.example.deadlock.VistaDeadlock;
 
 import javax.swing.*;
 
@@ -24,7 +29,9 @@ public class MenuPrincipalControlador {
         this.vistaMenu.btnRaceCondition.addActionListener(
                 (e) -> this.abrirCondicionCarrera()
         );
-        this.vistaMenu.btnDeadlock.addActionListener(e -> abrirEnDesarrollo("Deadlock"));
+        this.vistaMenu.btnDeadlock.addActionListener(
+                (e) -> this.abrirDeadlock()
+        );
         this.vistaMenu.btnAutores.addActionListener(e -> mostrarAutores());
         this.vistaMenu.btnSalir.addActionListener(e -> System.exit(0));
     }
@@ -54,6 +61,26 @@ public class MenuPrincipalControlador {
                 new VistaCondicionCarrera();
 
         new ControladorCondicionCarrera(
+                modelo,
+                vista,
+                this.vistaMenu
+        );
+
+        vista.setVisible(true);
+    }
+
+
+    private void abrirDeadlock() {
+
+        this.vistaMenu.setVisible(false);
+
+        SimuladorDeadlock modelo =
+                new SimuladorDeadlock();
+
+        VistaDeadlock vista =
+                new VistaDeadlock();
+
+        new ControladorDeadlock(
                 modelo,
                 vista,
                 this.vistaMenu
