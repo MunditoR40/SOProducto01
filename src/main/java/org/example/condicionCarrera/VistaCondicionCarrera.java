@@ -199,29 +199,10 @@ public class VistaCondicionCarrera extends JFrame {
         panelBotones.add(btnIniciar);
         panelBotones.add(btnDetener);
 
-        JLabel lblAutores =
-                new JLabel(
-                        "Condición de Carrera",
-                        SwingConstants.RIGHT
-                );
-
-        lblAutores.setBorder(
-                new EmptyBorder(
-                        0,
-                        0,
-                        5,
-                        15
-                )
-        );
 
         panelBottom.add(
                 panelBotones,
                 BorderLayout.CENTER
-        );
-
-        panelBottom.add(
-                lblAutores,
-                BorderLayout.SOUTH
         );
 
         add(panelBottom, BorderLayout.SOUTH);

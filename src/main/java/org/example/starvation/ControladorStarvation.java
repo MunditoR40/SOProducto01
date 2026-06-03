@@ -4,16 +4,15 @@ import javax.swing.*;
 import java.util.List;
 
 public class ControladorStarvation {
-    private SimuladorStarvation modelo;
-    private VistaStarvation vista;
-    private JFrame menuPrincipal;
+    private final SimuladorStarvation modelo;
+    private final VistaStarvation vista;
+    private final JFrame menuPrincipal;
 
-    public ControladorStarvation(SimuladorStarvation modelo, VistaStarvation vista,JFrame menuPrincipal) {
+    public ControladorStarvation(SimuladorStarvation modelo, VistaStarvation vista, JFrame menuPrincipal) {
         this.modelo = modelo;
         this.vista = vista;
         this.menuPrincipal = menuPrincipal;
 
-        // Conexión del Notificador de Consola
         this.modelo.setNotificador(mensaje -> {
             SwingUtilities.invokeLater(() -> {
                 vista.txtConsola.append(mensaje + "\n");
@@ -21,60 +20,38 @@ public class ControladorStarvation {
             });
         });
 
-        // Eventos
         this.vista.btnAgregar.addActionListener(e -> agregarNuevoHilo());
         this.vista.btnIniciar.addActionListener(e -> iniciar());
         this.vista.btnDetener.addActionListener(e -> detener());
         this.vista.btnAyuda.addActionListener(e -> mostrarAyuda());
-        this.vista.btnVolver.addActionListener(e -> volverAlMenu());
 
-        vista.addWindowListener(new java.awt.event.WindowAdapter() {
-
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent e) {
-
-                modelo.detenerSimulacion();
-
-                menuPrincipal.setVisible(true);
-            }
+        this.vista.btnVolver.addActionListener(e -> {
+            modelo.detenerSimulacion();
+            vista.dispose();
+            menuPrincipal.setVisible(true);
         });
 
-        actualizarPanelActivos(); // Mostrar panel vacío al inicio
-    }
-
-    private void volverAlMenu() {
-        modelo.detenerSimulacion(); // Detiene los hilos por seguridad
-        vista.dispose(); // Cierra la ventana actual de Starvation
-        menuPrincipal.setVisible(true); // Vuelve a mostrar el menú principal
-    }
-
-    private void mostrarAyuda() {
-        String mensaje = "La Inanición (Starvation) ocurre cuando un proceso \n" +
-                "de baja prioridad es postergado indefinidamente \n" +
-                "porque el planificador del SO siempre prefiere \n" +
-                "ejecutar hilos de mayor prioridad.";
-        JOptionPane.showMessageDialog(vista, mensaje, "Ayuda: ¿Qué es la Inanición?", JOptionPane.INFORMATION_MESSAGE);
+        actualizarPanelActivos();
     }
 
     private void agregarNuevoHilo() {
-        String nombre = vista.getNombreHilo();
-        int prioridad = vista.getPrioridadSeleccionada();
-
-
+        String nombre = vista.txtNombre.getText().trim();
         if (nombre.isEmpty()) {
-            JOptionPane.showMessageDialog(
-                    vista,
-                    "Escriba un nombre para el hilo.",
-                    "Advertencia",
-                    JOptionPane.WARNING_MESSAGE
-            );
+            JOptionPane.showMessageDialog(vista, "Escriba un nombre para el hilo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
+        if (modelo.existeHilo(nombre)) {
+            JOptionPane.showMessageDialog(vista, "Error: El proceso '" + nombre + "' ya se encuentra cargado.\nAsigne un identificador único.", "Error de Nombre", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        int prioridad = (Integer) vista.cbPrioridad.getSelectedItem();
         modelo.agregarHilo(nombre, prioridad);
+
         actualizarPanelActivos();
-        vista.limpiarNombre();
-        vista.enfocarNombre();
+        vista.txtNombre.setText("");
+        vista.txtNombre.requestFocus();
     }
 
     private void iniciar() {
@@ -89,30 +66,33 @@ public class ControladorStarvation {
         modelo.detenerSimulacion();
         vista.btnIniciar.setEnabled(true);
         vista.btnDetener.setEnabled(false);
-        actualizarPanelActivos(); // Se vaciará la lista
+        actualizarPanelActivos();
     }
 
-    // Nuevo método para listar los hilos en el JTextPane
+    private void mostrarAyuda() {
+        String mensaje = "La Inanición (Starvation) ocurre cuando un proceso de baja prioridad \n" +
+                "es postergado indefinidamente en la cola de Listos, porque el planificador \n" +
+                "siempre le otorga el uso de la CPU a hilos de mayor jerarquía.\n\n" +
+                "En esta simulación, observarás cómo los procesos de Prioridad 1 jamás\n" +
+                "logran imprimir en consola si hay procesos de Prioridad 10 acaparando el recurso.";
+        JOptionPane.showMessageDialog(vista, mensaje, "Marco Teórico: Starvation", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     private void actualizarPanelActivos() {
         List<Thread> hilos = modelo.getHilos();
         StringBuilder sb = new StringBuilder();
-
         if (hilos.isEmpty()) {
             sb.append("\n [ Memoria Vacía ]\n Ningún proceso cargado.");
         } else {
-            sb.append("\n  PID\t| PRIORIDAD\n");
+            sb.append("\n  PROCESO\t| PRIORIDAD\n");
             sb.append("----------------------------\n");
             for (Thread t : hilos) {
-                // Usamos el estado del hilo para dar un feedback más técnico
                 String estado = t.isAlive() ? "(Ejecutando)" : "(Listo)";
                 sb.append("  ").append(t.getName())
                         .append("\t| Nivel ").append(t.getPriority())
                         .append("\n  ").append(estado).append("\n\n");
             }
         }
-
         SwingUtilities.invokeLater(() -> vista.paneActivos.setText(sb.toString()));
     }
-
-
 }

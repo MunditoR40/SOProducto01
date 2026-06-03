@@ -7,22 +7,27 @@ import java.awt.*;
 public class VistaStarvation extends JFrame {
     public JTextField txtNombre;
     public JComboBox<Integer> cbPrioridad;
-    public JButton btnAgregar;
-    public JButton btnIniciar;
-    public JButton btnDetener;
+    public JButton btnAgregar, btnIniciar, btnDetener, btnVolver, btnAyuda;
     public JTextArea txtConsola;
-    public JTextPane paneActivos; // Nuevo componente solicitado
-    public JButton btnAyuda;
-    public JButton btnVolver;
+    public JTextPane paneActivos;
 
     public VistaStarvation() {
-        setTitle("Producto de 1° Unidad - Sistemas Operativos - Simulación de Inanición");        setSize(850, 550);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setTitle("Producto de 1° Unidad - SO - Simulación de Inanición");
+        setSize(900, 500);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
-        // --- Panel Superior: Título y Entradas ---
-        JPanel panelTop = new JPanel(new GridLayout(2, 1));
+        // --- Cargar Icono de la UNS ---
+        try {
+            java.net.URL urlLogo = getClass().getResource("/uns_logo.png");
+            if (urlLogo != null) {
+                Image imgOriginal = new ImageIcon(urlLogo).getImage();
+                this.setIconImage(imgOriginal.getScaledInstance(32, 32, Image.SCALE_SMOOTH));
+            }
+        } catch (Exception e) {}
 
+        // --- Panel Superior ---
+        JPanel panelTop = new JPanel(new GridLayout(2, 1));
         JLabel lblTitulo = new JLabel("SIMULACIÓN DE INANICIÓN (STARVATION)", SwingConstants.CENTER);
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         lblTitulo.setBorder(new EmptyBorder(10, 0, 5, 0));
@@ -40,20 +45,17 @@ public class VistaStarvation extends JFrame {
         panelControles.add(cbPrioridad);
 
         btnAgregar = new JButton("Agregar Hilo");
-        btnAgregar.setBackground(Color.BLUE); // Color más oscuro
-        btnAgregar.setForeground(Color.BLACK); // Letras blancas
+        btnAgregar.setBackground(new Color(50, 50, 50));
+        btnAgregar.setForeground(Color.WHITE);
         panelControles.add(btnAgregar);
 
-        btnAyuda = new JButton("?"); // Botón pequeño de ayuda
+        btnAyuda = new JButton("?");
         panelControles.add(btnAyuda);
-
-        btnVolver = new JButton("Volver al Menú");
-        panelControles.add(btnVolver);
 
         panelTop.add(panelControles);
         add(panelTop, BorderLayout.NORTH);
 
-        // --- Panel Central: Split (Izquierda Activos / Derecha Consola) ---
+        // --- Panel Central ---
         paneActivos = new JTextPane();
         paneActivos.setEditable(false);
         paneActivos.setBackground(new Color(245, 245, 245));
@@ -65,64 +67,36 @@ public class VistaStarvation extends JFrame {
         txtConsola = new JTextArea();
         txtConsola.setEditable(false);
         txtConsola.setBackground(Color.BLACK);
-        txtConsola.setForeground(new Color(0, 255, 0));
+        txtConsola.setForeground(Color.GREEN);
         txtConsola.setFont(new Font("Monospaced", Font.BOLD, 14));
         JPanel panelDerecho = new JPanel(new BorderLayout());
         panelDerecho.add(new JLabel(" Procesador: Consola de Ejecución", SwingConstants.CENTER), BorderLayout.NORTH);
         panelDerecho.add(new JScrollPane(txtConsola), BorderLayout.CENTER);
 
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelIzquierdo, panelDerecho);
-        splitPane.setDividerLocation(250); // Ancho del panel izquierdo
+        splitPane.setDividerLocation(260);
         add(splitPane, BorderLayout.CENTER);
 
-        // --- Panel Inferior: Botones y Autores ---
-        JPanel panelBottom = new JPanel(new BorderLayout());
+        // --- Panel Inferior (Limpio y Reubicado) ---
+        JPanel panelFooter = new JPanel(new BorderLayout());
+        panelFooter.setBorder(new EmptyBorder(10, 15, 10, 15));
 
-        JPanel panelAcciones = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        btnVolver = new JButton("← Volver al Menú");
+        panelFooter.add(btnVolver, BorderLayout.WEST); // FIJO A LA IZQUIERDA
+
+        JPanel panelAccionesCentro = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         btnIniciar = new JButton("Iniciar Simulación");
         btnDetener = new JButton("Detener SO");
         btnDetener.setEnabled(false);
-        panelAcciones.add(btnIniciar);
-        panelAcciones.add(btnDetener);
+        panelAccionesCentro.add(btnIniciar);
+        panelAccionesCentro.add(btnDetener);
+        panelFooter.add(panelAccionesCentro, BorderLayout.CENTER); // FIJO AL CENTRO
 
-        JLabel lblAutores = new JLabel("Autores: Rojas Leon & Liñan Briones", SwingConstants.RIGHT);
-        lblAutores.setFont(new Font("Arial", Font.ITALIC, 12));
-        lblAutores.setBorder(new EmptyBorder(0, 0, 5, 15));
+        JLabel lblAutores = new JLabel("Autor: Rojas Leon & Liñan Briones", SwingConstants.RIGHT);
+        lblAutores.setFont(new Font("Arial", Font.ITALIC, 11));
+        panelFooter.add(lblAutores, BorderLayout.EAST); // FIJO A LA DERECHA
 
-        panelBottom.add(panelAcciones, BorderLayout.CENTER);
-        panelBottom.add(lblAutores, BorderLayout.SOUTH);
-
-        add(panelBottom, BorderLayout.SOUTH);
+        add(panelFooter, BorderLayout.SOUTH);
         setLocationRelativeTo(null);
-
-        try {
-            // Cargamos la imagen desde la carpeta de recursos de forma segura para el JAR
-            java.net.URL urlLogo = getClass().getResource("/uns_logo.png");
-            if (urlLogo != null) {
-                ImageIcon icon = new ImageIcon(urlLogo);
-                // Colocamos el icono en la ventana
-                this.setIconImage(icon.getImage());
-            } else {
-                System.out.println("No se pudo encontrar el archivo uns_logo.png en resources");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String getNombreHilo() {
-        return txtNombre.getText().trim();
-    }
-
-    public int getPrioridadSeleccionada() {
-        return (Integer) cbPrioridad.getSelectedItem();
-    }
-
-    public void limpiarNombre() {
-        txtNombre.setText("");
-    }
-
-    public void enfocarNombre() {
-        txtNombre.requestFocus();
     }
 }
