@@ -156,13 +156,7 @@ public class VistaDeadlock extends JFrame {
         txtConsola.setBackground(Color.BLACK);
         txtConsola.setForeground(new Color(0, 255, 0));
 
-        txtConsola.setFont(
-                new Font(
-                        "Monospaced",
-                        Font.BOLD,
-                        13
-                )
-        );
+        txtConsola.setFont(new Font("Monospaced",Font.BOLD,13));
 
         JPanel panelDerecho =
                 new JPanel(new BorderLayout());

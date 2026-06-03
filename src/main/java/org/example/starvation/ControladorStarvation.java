@@ -32,6 +32,17 @@ public class ControladorStarvation {
         });
 
         actualizarPanelActivos();
+
+        vista.addWindowListener(new java.awt.event.WindowAdapter() {
+
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent e) {
+
+                modelo.detenerSimulacion();
+
+                menuPrincipal.setVisible(true);
+            }
+        });
     }
 
     private void agregarNuevoHilo() {
