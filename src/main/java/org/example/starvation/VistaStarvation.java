@@ -14,7 +14,7 @@ public class VistaStarvation extends JFrame {
     public VistaStarvation() {
         setTitle("Producto de 1° Unidad - SO - Simulación de Inanición");
         setSize(900, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
 
         // --- Cargar Icono de la UNS ---
