@@ -238,6 +238,20 @@ public class VistaDeadlock extends JFrame {
                 BorderLayout.SOUTH);
 
         setLocationRelativeTo(null);
+
+        try {
+            // Cargamos la imagen desde la carpeta de recursos de forma segura para el JAR
+            java.net.URL urlLogo = getClass().getResource("/uns_logo.png");
+            if (urlLogo != null) {
+                ImageIcon icon = new ImageIcon(urlLogo);
+                // Colocamos el icono en la ventana
+                this.setIconImage(icon.getImage());
+            } else {
+                System.out.println("No se pudo encontrar el archivo uns_logo.png en resources");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public String getNombreProceso() {
