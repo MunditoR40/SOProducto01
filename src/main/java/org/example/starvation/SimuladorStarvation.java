@@ -83,6 +83,7 @@ public class SimuladorStarvation {
         });
 
         nuevoHilo.setName(nombre);
+        nuevoHilo.setPriority(prioridad);
 
         listaHilos.add(nuevoHilo);
 
