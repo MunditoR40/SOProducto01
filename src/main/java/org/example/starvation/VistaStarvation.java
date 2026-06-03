@@ -45,8 +45,8 @@ public class VistaStarvation extends JFrame {
         panelControles.add(cbPrioridad);
 
         btnAgregar = new JButton("Agregar Hilo");
-        btnAgregar.setBackground(new Color(50, 50, 50));
-        btnAgregar.setForeground(Color.WHITE);
+        btnAgregar.setForeground(new Color(50, 50, 50));
+        btnAgregar.setBackground(Color.WHITE);
         panelControles.add(btnAgregar);
 
         btnAyuda = new JButton("?");
